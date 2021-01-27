@@ -683,7 +683,7 @@ reg        [15:0] voice_out;
     
 wire ldq;
          
-
+/*
 SPEECH256_TOP speech256 (
         .clk        (clk_voice),
         .rst_an     (rst_a_n),
@@ -694,9 +694,16 @@ SPEECH256_TOP speech256 (
         .sample_out (signed_voice_out),
         .sample_stb ()
 );
+*/
 
-
-
+sp0256 speech256 (
+        .clock_250k (    clk_voice),
+        .reset          (rst_a_n),
+        .input_rdy      (ldq),
+        .allophone      (rom_addr[6:0]),
+        .trig_allophone (ald_n),
+        .audio_out      (signed_voice_out)
+);
 
 wire ald_n   = !(!rom_addr[7] | cart_wr_n | cart_cs);
 wire rst_a_n ;
