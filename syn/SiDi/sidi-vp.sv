@@ -119,10 +119,10 @@ wire        ioctl_wr;
 wire  [7:0] ioctl_index;
 `ifndef JOYDC
 wire [15:0] joystick_0,joystick_1;
-assign VGA_CLOCK = clk_sys;
 `else
 wire [15:0] joystick_0 = ~JOYSTICK1[4:0];
 wire [15:0] joystick_1 = ~JOYSTICK2[4:0];
+assign VGA_CLOCK = clk_sys;
 `endif
 wire [24:0] ps2_mouse;
 
