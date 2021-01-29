@@ -124,7 +124,9 @@ set_location_assignment PIN_W6 -to SDRAM_CKE
 set_location_assignment PIN_Y6 -to SDRAM_CLK
 
 set_location_assignment PIN_M19 -to PS2_CLK
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_CLK
 set_location_assignment PIN_M20 -to PS2_DAT
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_DAT
 
 set_location_assignment PIN_A20 -to AUDIO_IN
 
@@ -139,6 +141,12 @@ set_location_assignment PIN_B18 -to JOYSTICK1[2]
 set_location_assignment PIN_B19 -to JOYSTICK1[3]
 set_location_assignment PIN_B14 -to JOYSTICK1[4]
 set_location_assignment PIN_B13 -to JOYSTICK1[5]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK1[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK1[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK1[2]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK1[3]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK1[4]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK1[5]
 
 set_location_assignment PIN_B7 -to JOYSTICK2[0]
 set_location_assignment PIN_B8 -to JOYSTICK2[1]
@@ -146,6 +154,12 @@ set_location_assignment PIN_B9 -to JOYSTICK2[2]
 set_location_assignment PIN_B10 -to JOYSTICK2[3]
 set_location_assignment PIN_B5 -to JOYSTICK2[4]
 set_location_assignment PIN_B4 -to JOYSTICK2[5]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK2[0]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK2[1]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK2[2]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK2[3]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK2[4]
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to JOYSTICK2[5]
 
 set_location_assignment PIN_A15 -to JOY_SELECT
 

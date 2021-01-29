@@ -123,7 +123,9 @@ set_location_assignment PIN_K21 -to UART_RXD
 set_location_assignment PIN_J21 -to UART_TXD
 
 set_location_assignment PIN_N19 -to PS2_CLK
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_CLK
 set_location_assignment PIN_N20 -to PS2_DAT
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to PS2_DAT
 
 set_location_assignment PIN_E22 -to SD_SCK
 set_location_assignment PIN_D22 -to SD_CS
