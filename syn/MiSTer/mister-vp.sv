@@ -129,8 +129,6 @@ module emu
 
 assign {UART_RTS, UART_TXD, UART_DTR} = 0;
 
-assign AUDIO_S   = 0;
-assign AUDIO_MIX = 0;
 
 assign LED_USER  = ioctl_download;
 assign LED_DISK  = 0;
@@ -158,6 +156,7 @@ parameter CONF_STR = {
 	"-;",
 	"OE,System,Odyssey2,Videopac;",
 	"O6,Palette,Tv (RF),RGB;",
+	"O4,TV Set,Color,B/W;",
 	"O8,Aspect ratio,4:3,16:9;",
 	"O9B,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"O1,The Voice,Off,on;",
@@ -218,6 +217,7 @@ wire       joy_swap = status[7];
 
 wire       VOICE = status[1];
 wire       MODE = status[6];
+wire       SCREEN = status[4];
 
 wire [15:0] joya = joy_swap ? joystick_1 : joystick_0;
 wire [15:0] joyb = joy_swap ? joystick_0 : joystick_1;
@@ -429,11 +429,17 @@ wire [7:0] cart_di;
 // T0_i high if SP0256 command buffer full
 
 
-wire [15:0] audio_out = (VOICE?{snd,snd,snd,snd} | {voice_out[7:0],voice_out[7:0]}:{snd, snd, snd,snd}) ;
+//wire [15:0] audio_out = (VOICE?{snd,snd,snd,snd} | {voice_out[7:0],voice_out[7:0]}:{snd, snd, snd,snd}) ;
 
-assign AUDIO_L = audio_out;
+assign AUDIO_L = VOICE ? {4'b0,snd,snd,4'b0} + voice_out * 2 :{2'b0, snd, snd,6'b0};//{audio, 6'd0};
+assign AUDIO_R = AUDIO_L;
+assign AUDIO_S = 1;
+assign AUDIO_MIX = 0;
+
 assign AUDIO_R = AUDIO_L;
 
+assign AUDIO_S   = 1;
+assign AUDIO_MIX = 0;
 
 ////////////////////////////  VIDEO  ////////////////////////////////////
 
@@ -468,6 +474,17 @@ always @(posedge ce_pix) begin
 	ce_h_cnt <= (~old_h & HSync) ? 16'd0 : (ce_h_cnt + 16'd1);
 end
 
+
+wire [9:0] grayscale;
+vga_to_greyscale vga_to_greyscale
+(
+  .r_in  ({colors[23:18],colors[23:20]}),
+  .g_in  ({colors[15:10],colors[15:12]}),
+  .b_in  ({colors[7:2],colors[7:4]}),
+  .y_out (grayscale) 
+);
+
+
 video_mixer #(.LINE_LENGTH(455)) video_mixer
 (
 	.*,
@@ -483,9 +500,10 @@ video_mixer #(.LINE_LENGTH(455)) video_mixer
 	.hq2x(scale==1),
 	.mono(0),
 
-	.R(colors[23:16]),
-	.G(colors[15:8]),
-	.B(colors[7:0])
+	.R(SCREEN ? grayscale[9:2] : colors[23:16]),
+	.G(SCREEN ? grayscale[9:2] : colors[15:8] ),
+	.B(SCREEN ? grayscale[9:2] : colors[7:0]  ),
+
 );
 
 
@@ -637,8 +655,7 @@ wire       joy_reset  = ~joya[5] & ~joyb[5];
 ////////////The Voice /////////////////////////////////////////////////
 
 
-reg signed [9:0] signed_voice_out;
-reg        [8:0] voice_out;
+reg signed [9:0] voice_out;
     
 wire ldq;
          
@@ -649,15 +666,10 @@ sp0256 sp0256 (
         .lrq        (ldq),
         .data_in    (rom_addr[6:0]),
         .ald        (ald),
-        .audio_out  (signed_voice_out),
+        .audio_out  (voice_out),
 );
 
-compressor compressor
-(
-        .clk  (clk_sys),
-        .din  ( signed_voice_out),
-        .dout ( voice_out)
-);
+
 
 wire ald     = !rom_addr[7] | cart_wr_n | cart_cs;
 wire rst_a_n;

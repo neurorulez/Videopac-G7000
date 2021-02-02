@@ -1,7 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all,ieee.numeric_std.all;
 
-entity sp0256_256b_019_decoded is
+entity sp0256_003_decoded is
 port (
 	clk  : in  std_logic;
 	addr : in  std_logic_vector(13 downto 0);
@@ -9,7 +9,7 @@ port (
 );
 end entity;
 
-architecture prom of sp0256_256b_019_decoded is
+architecture prom of sp0256_003_decoded is
 	type rom is array(0 to  11295) of std_logic_vector(7 downto 0);
 	signal rom_data: rom := (
 		X"00",X"18",X"01",X"00",X"19",X"01",X"00",X"1A",X"01",X"00",X"1B",X"01",X"00",X"1C",X"01",X"00",
