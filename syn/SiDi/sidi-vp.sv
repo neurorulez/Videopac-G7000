@@ -120,9 +120,11 @@ wire  [7:0] ioctl_index;
 `ifndef JOYDC
 wire [15:0] joystick_0,joystick_1;
 `else
-wire [15:0] joystick_0 = ~JOYSTICK1[5:0];
-wire [15:0] joystick_1 = ~JOYSTICK2[5:0];
+wire [15:0] joystick_0 = {10'd0,~JOYSTICK1[5:0]};
+wire [15:0] joystick_1 = {10'd0,~JOYSTICK2[5:0]};
 assign VGA_CLOCK = clk_sys;
+assign VGA_BLANK = 1'b1;
+assign JOY_SELECT = 1'b1;
 `endif
 wire [24:0] ps2_mouse;
 
