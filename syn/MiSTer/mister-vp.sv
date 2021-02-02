@@ -157,7 +157,7 @@ parameter CONF_STR = {
 	"F3,CHR,Change VDC font;",
 	"-;",
 	"OE,System,Odyssey2,Videopac;",
-	"O6,Palette,NTSC,PAL;",
+	"O6,Palette,Tv (RF),RGB;",
 	"O8,Aspect ratio,4:3,16:9;",
 	"O9B,Scandoubler Fx,None,HQ2x,CRT 25%,CRT 50%,CRT 75%;",
 	"O1,The Voice,Off,on;",
@@ -429,7 +429,6 @@ wire [7:0] cart_di;
 // T0_i high if SP0256 command buffer full
 
 
-												
 wire [15:0] audio_out = (VOICE?{snd,snd,snd,snd} | {voice_out[7:0],voice_out[7:0]}:{snd, snd, snd,snd}) ;
 
 assign AUDIO_L = audio_out;
